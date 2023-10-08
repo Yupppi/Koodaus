@@ -6,9 +6,9 @@
 using namespace std;
 
 void CpkCalculator(double measurements[], int arraySize, double designMeasure, double upperLimit,
-					double lowerLimit, double &standardDeviation, double &CpkUpper, double &CpkLower,
-					double &Cp);
-void CpCalculator(double upperLimit, double lowerLimit, double standardDeviation, double &Cp);
+					double lowerLimit);
+void CpCalculator(double upperLimit, double lowerLimit, double standardDeviation);
+void OutsideRange(double measurements[], int arraySize, double upMeasure, double lowMeasure);
 
 int main() {
 
@@ -45,18 +45,12 @@ int main() {
 		cout << "Input the measurement of part number " << i+1 << ": ";
 		cin >> measurements[i];
 	}
-	
-	double standardDeviation = 0.0;
-	double CpkUpper = 0.0;
-	double CpkLower = 0.0;
-	double Cp = 0.0;
 
 	// Decorate the output
 	cout << endl;
 	cout << string(79, '-') << endl;
 	cout << endl;
-	CpkCalculator(measurements, arraySize, designMeasure, upperLimit, lowerLimit,
-					CpkUpper, CpkLower, standardDeviation, Cp);
+	CpkCalculator(measurements, arraySize, designMeasure, upperLimit, lowerLimit);
 	cout << endl;
 	cout << string(79, '-') << endl;
 	cout << endl;
@@ -70,8 +64,7 @@ int main() {
 }
 
 void CpkCalculator(double measurements[], int arraySize, double designMeasure, double upperLimit,
-					double lowerLimit, double &standardDeviation, double &CpkUpper, double &CpkLower,
-					double &Cp) {
+					double lowerLimit) {
 	
 	// Calculating the mean average measure X
 	double sum = 0;
@@ -89,23 +82,44 @@ void CpkCalculator(double measurements[], int arraySize, double designMeasure, d
 	}
 	
 	// Calculating the standard deviation s/alpha
+	double standardDeviation = 0.0;
 	standardDeviation = sqrt(sigma/(arraySize-1));
 	
 	// Calculating the upper and lower Cpk number
-	CpkUpper = ((upperLimit + designMeasure) - averageMeasure) / (3 * standardDeviation);
+	double CpkUpper = 0.0;
+	double CpkLower = 0.0;
+	double upMeasure = designMeasure + upperLimit;
+	double lowMeasure = designMeasure + lowerLimit;
+	CpkUpper = (upMeasure - averageMeasure) / (3 * standardDeviation);
 	cout << "Your system's upper Cpk value is: " << setprecision(2) << CpkUpper << endl;
-	CpkLower = (averageMeasure - (designMeasure + lowerLimit)) / (3 * standardDeviation);
+	CpkLower = (averageMeasure - lowMeasure) / (3 * standardDeviation);
 	cout << "Your system's lower Cpk value is: " << setprecision(2) << CpkLower << endl;
 
-	CpCalculator(upperLimit, lowerLimit, standardDeviation, Cp);
+	CpCalculator(upperLimit, lowerLimit, standardDeviation);
+	OutsideRange(measurements, arraySize, upMeasure, lowMeasure);
 }
 
-void CpCalculator (double upperLimit, double lowerLimit, double standardDeviation, double &Cp) {
+void CpCalculator (double upperLimit, double lowerLimit, double standardDeviation) {
 	
 	// Calculating the tolerance range
 	double toleranceRange = upperLimit - lowerLimit;
 	
 	// Calculating the Cp number
+	double Cp = 0.0;
 	Cp = toleranceRange / (6 * standardDeviation);
 	cout << "Your system's Cp value is: " << setprecision(2) << Cp << endl;
+}
+
+void OutsideRange (double measurements[], int arraySize, double upMeasure, double lowMeasure) {
+	
+	// Counting the number of measurements outside the tolerance range
+	int outside = 0;
+	for ( int i = 0; i < arraySize; i++ ) {
+		if ( measurements[i] < upMeasure or measurements[i] < lowMeasure ) {
+			++outside;
+		}
+	}
+	cout << endl;
+	cout << "You have " << outside << " measurements out of " << arraySize << " outside the tolerance range."
+	<< endl;
 }
