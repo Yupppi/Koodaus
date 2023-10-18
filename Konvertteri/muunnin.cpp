@@ -1,199 +1,416 @@
-﻿#include <iostream>
+#include <iostream>
 #include <math.h>
 #include <string>
+#include <conio.h>
+#include <iomanip>
+#include <chrono>
+#include <ctime>
 
 using namespace std;
 
-void lampoTila(char unit, double temp) {
-	if (unit == 'f') {
-		cout << "The temperature " << temp << " F is equal to " << 0.555*(temp-32) << " C." << endl << endl;
-	}
-	else if (unit == 'c') {
-		cout << "The temperature " << temp << " C is equal to " << temp * 1.8 + 32 << " F." << endl << endl;
-	}
-	else {
-		cout << "Error in input, try again!" << endl;
+void tulostinviiva();
+void lampoTila(char unit, double temp);
+void pituusMitta(int question, char unit, double measure);
+void paino(char unit, double weight);
+void kello();
+void AMPM(int& tunti, string& am_pm);
+
+int main()
+{
+	int input = 0;
+
+	while (input != 4)
+	{
+		string welcome = "**  Welcome to converter between metric and imperial units  **";
+
+		cout << '\n';
+		cout << string(welcome.length(), '*') << '\n';
+		cout << "**" << string(welcome.length() - 4, ' ') << "**\n";
+		cout << welcome << '\n';
+		cout << "**" << string(welcome.length() - 4, ' ') << "**\n";
+		cout << string(welcome.length(), '*') << "\n\n";
+
+		cout << "Enter your desired conversion:\n";
+		cout << "1. Temperature\n"
+			 << "2. Length/Height\n"
+			 << "3. Weight\n"
+			 << "4. Time\n"
+			 << "5. Exit\n";
+
+		cin >> input;
+		cout << '\n';
+		double temp = 0.0;
+		double measure = 0.0;
+		double weight = 0.0;
+		string anykey;
+
+		switch (input)
+		{
+			int length_or_height;
+			char unit;
+
+		case 1:
+
+			cout << "Enter the temperature in numbers: ";
+			cin >> temp;
+			cout << "Enter the units (c = Celsius, f = Fahrenheit): ";
+			cin >> unit;
+
+			if (unit != 'c' && unit != 'f')
+			{
+				cout << "Input error, try again!\n";
+				cout << "Press any key to continue...\n";
+				getch();
+				break;
+			}
+
+			lampoTila(unit, temp);
+
+			cout << "Press any key to continue...\n";
+			getch();
+			break;
+
+		case 2:
+
+			cout << "Do you want the measure in height or length? (h/l): \n"
+				 << "1. Height\n"
+				 << "2. Length\n";
+			cin >> length_or_height;
+
+			if (length_or_height == 2)
+			{
+				cout << "Enter the length in numbers: ";
+			}
+			else if (length_or_height == 1)
+			{
+				cout << "Enter the height in numbers: ";
+			}
+
+			cin >> measure;
+			cout << "Enter the unit (m = meters, f = feet, c = centimeters, "
+				 << "i = inches, k = kilometres, e = miles): ";
+			cin >> unit;
+
+			if (unit != 'm' && unit != 'f' && unit != 'c' && unit != 'i' && unit != 'k' && unit != 'e')
+			{
+				cout << "Input error.\n";
+				break;
+			}
+
+			pituusMitta(length_or_height, unit, measure);
+
+			cout << "Press any key to continue...\n";
+			getch();
+			break;
+
+		case 3:
+
+			cout << "Enter the weight in numbers: ";
+			cin >> weight;
+			cout << "Enter the unit (k = kilograms, l = lbs): ";
+			cin >> unit;
+
+			if (unit != 'k' && unit != 'l')
+			{
+				cout << "Input error, try again!\n";
+				cout << "Press any key to continue...\n";
+				getch();
+				break;
+			}
+
+			paino(unit, weight);
+
+			cout << "Press any key to continue...\n";
+			getch();
+			break;
+
+		case 4:
+
+			kello();
+			cout << "Press any key to continue...\n";
+			getch();
+			break;
+
+		case 5:
+			continue;
+
+		default:
+			cout << "Error in choice, try again!\n";
+			break;
+		}
 	}
 
+	cout << "Thanks for using the converter!\n\n";
 }
 
-void pituusMitta(char question, char unit, double measure) {
+void tulostinviiva(){
+	string erotinviiva = string(62, '-');
+	cout << "\n" << erotinviiva << "\n" << endl;
+}
 
-	if (question == 'h') {
-		if (unit == 'm') {
+void lampoTila(char unit, double temp)
+{
+	if (unit == 'f')
+	{
+		tulostinviiva();
+		cout << "The temperature " << temp << " F is equal to " << setprecision(3) <<
+				0.555 * (temp - 32) << " C.\n";
+		tulostinviiva();
+	}
+	else if (unit == 'c')
+	{
+		tulostinviiva();
+		cout << "The temperature " << temp << " C is equal to " << setprecision(3) <<
+				temp * 1.8 + 32 << " F.\n";
+		tulostinviiva();
+	}
+	else
+	{
+		cout << "Error in input, try again!\n";
+	}
+}
+
+void pituusMitta(int question, char unit, double measure)
+{
+	if (question == 1)
+	{
+		if (unit == 'm')
+		{
 			int feet = measure / 0.3048;
 			int inches = (measure - (feet * 0.3048)) / 0.0254;
-			cout << "The height " << measure << " m is equal to " << feet<< " feet " << inches << " inches." << endl << endl;
+			tulostinviiva();
+			cout << "The height " << measure << " m is equal to " << feet << " feet " <<
+					inches << " inches.\n";
+			tulostinviiva();
 		}
-		else if (unit == 'f') {
-			cout << "The height " << measure << " feet is equal to " << measure * 0.3048 << " m or " << measure*0.3048/100 << " centimeters" << endl << endl;
+		else if (unit == 'f')
+		{
+			tulostinviiva();
+			cout << "The height " << measure << " feet is equal to " << setprecision(3) <<
+					measure * 0.3048 << " m or " << setprecision(3) <<
+					measure * 0.3048 / 100 << " centimeters.\n";
+			tulostinviiva();
 		}
-		else if (unit == 'c') {
+		else if (unit == 'c')
+		{
 			int feet = measure * 0.03281;
 			int inches = (measure - (feet / 0.03281)) / 2.54;
-			cout << "The height " << measure << " cm is equal to " << feet << " feet " << inches << " inches." << endl << endl;
+			tulostinviiva();
+			cout << "The height " << measure << " cm is equal to " << feet << " feet " <<
+					inches << " inches.\n";
+			tulostinviiva();
 		}
-		else if (unit == 'i') {
-			cout << "The height " << measure << " inches is equal to " << measure*2.54 << " cm." << endl << endl;
-		}
-	}
-	else if (question == 'l') {
-		if (unit == 'm') {
-			cout << "The length " << measure << " m is equal to " << measure / 0.3048 << " feet." << endl << endl;
-		}
-		else if (unit == 'f') {
-			cout << "The length " << measure << " feet is equal to " << measure * 0.3048 << " m." << endl << endl;
-		}
-		else if (unit == 'c') {
-			cout << "The length " << measure << " cm is equal to " << measure / 2.54 << " inches." << endl << endl;
-		}
-		else if (unit == 'i') {
-			cout << "The length " << measure << " inches is equal to " << measure * 2.54 << " cm." << endl << endl;
-		}
-		else if (unit == 'e') {
-			cout << "The length " << measure << " miles is equal to " << measure * 1.609 << " kilometres." << endl << endl;
-		}
-		else if (unit == 'k') {
-			cout << "The length " << measure << " kilometers is equal to " << measure /1.609 << " miles." << endl << endl;
+		else if (unit == 'i')
+		{
+			tulostinviiva();
+			cout << "The height " << measure << " inches is equal to " << measure * 2.54 <<
+					" cm.\n";
+			tulostinviiva();
 		}
 	}
-	else {
-		cout << "Error in input, try again!" << endl;
+	else if (question == 2)
+	{
+		if (unit == 'm')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " m is equal to " << setprecision(3) <<
+				measure / 0.3048 << " feet.\n";
+			tulostinviiva();
+		}
+		else if (unit == 'f')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " feet is equal to " << setprecision(3) <<
+				measure * 0.3048 << " m.\n";
+			tulostinviiva();
+		}
+		else if (unit == 'c')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " cm is equal to " << setprecision(3) <<
+				measure / 2.54 << " inches.\n";
+			tulostinviiva();
+		}
+		else if (unit == 'i')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " inches is equal to " << setprecision(3) <<
+				measure * 2.54 << " cm.\n";
+			tulostinviiva();
+		}
+		else if (unit == 'e')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " miles is equal to " << setprecision(3) <<
+				measure * 1.609 << " kilometres.\n";
+			tulostinviiva();
+		}
+		else if (unit == 'k')
+		{
+			tulostinviiva();
+			cout << "The length " << measure << " kilometers is equal to " << setprecision(3) <<
+				measure / 1.609 << " miles.\n";
+			tulostinviiva();
+		}
+	}
+	else
+	{
+		cout << "Error in input, try again!\n";
+		cout << "Press any key to continue...\n";
+		getch();
 	}
 }
 
-void paino(char unit, double weight) {
-	if (unit == 'k') {
-		cout << "The weight " << weight << " kg is equal to " << weight/0.453 << " lbs." << endl;
+void paino(char unit, double weight)
+{
+	if (unit == 'k')
+	{
+		tulostinviiva();
+		cout << "The weight " << weight << " kg is equal to " << setprecision(3) <<
+			weight / 0.453 << " lbs.\n";
+		tulostinviiva();
 	}
-	else if (unit == 'l') {
-		cout << "The weight " << weight << " lbs is equal to " << weight*0.453 << " kg." << endl;
+	else if (unit == 'l')
+	{
+		tulostinviiva();
+		cout << "The weight " << weight << " lbs is equal to " << setprecision(3) <<
+				weight * 0.453 << " kg.\n";
+		tulostinviiva();
 	}
-	else {
-		cout << "Error in input, try again!" << endl;
+	else
+	{
+		cout << "Error in input, try again!\n";
+		cout << "Press any key to continue...\n";
+		getch();
 	}
 
-	cout << endl;
+	cout << '\n';
 	cout << "Do you also want a daily protein intake recommendation for your bodyweight for training? (y/n): ";
 	char question;
 	cin >> question;
-	cout << endl;
+	cout << '\n';
 
-	if (question == 'y') {
+	if (question == 'y')
+	{
 
 		double fat = 0.0;
 		double upper_limit = 0.0;
 
-		if (unit == 'k') {
+		if (unit == 'k')
+		{
+			tulostinviiva();
 			cout << "The daily protein intake recommendation for you would be roughly from " << weight * 1.3 << " to " << weight * 2 << " grams of protein per day." << endl;
+			tulostinviiva();
 			fat = weight * 0.6;
 			upper_limit = weight * 2.2;
 		}
-		else if (unit == 'l') {
-			cout << "The daily protein intake recommendation for you would be roughly from " << weight * 1.3/0.453 << " to " << weight * 2/0.453 << " grams of protein per day." << endl;
+		else if (unit == 'l')
+		{
+			tulostinviiva();
+			cout << "The daily protein intake recommendation for you would be roughly from " << weight * 1.3 / 0.453 << " to " << weight * 2 / 0.453 << " grams of protein per day." << endl;
+			tulostinviiva();
 			fat = weight * 0.3;
 			upper_limit = weight;
 		}
 
-		cout << "Notice that more than 2,2 grams/kg or 1 grams/lbs of bodyweight in protein (" << upper_limit << " grams for you)" << endl;
-		cout << "doesn't give any additional benefits, but aim a bit higher than normal if you're dropping weight" << endl;
-		cout << "to avoid unnecessary muscle loss." << endl << endl;
-		cout << "A fat intake anywhere from 0,6 g/kg or 0,3 g/lbs (" << fat << " grams for you) upwards easily covers your daily need for fats. " << endl;
-		cout <<	"For training purposes filling the rest of the calorie intake with carbs gives plenty of energy." << endl << endl;
-		cout << "However, remember that the human body is able to work in wide range of conditions " << endl;
-		cout << "and the required daily intakes of macro nutrients for living are very low." << endl;
-		cout << "The rest of the calorie intake can be filled to your needs and desires and just convenience." << endl;
-		cout << "So don't get stressed about matching the planned macros every day to a gram." << endl << endl;
+		cout << "Notice that more than 2,2 grams/kg or 1 grams/lbs of bodyweight in protein (" << upper_limit << " grams for you)\n";
+		cout << "doesn't give any additional benefits, but aim a bit higher than normal if you're dropping weight\n";
+		cout << "to avoid unnecessary muscle loss.\n\n";
+		cout << "A fat intake anywhere from 0,6 g/kg or 0,3 g/lbs (" << fat << " grams for you) upwards easily covers your daily need for fats. \n";
+		cout << "For training purposes filling the rest of the calorie intake with carbs gives plenty of energy.\n\n";
+		cout << "However, remember that the human body is able to work in wide range of conditions \n";
+		cout << "and the required daily intakes of macro nutrients for living are very low.\n";
+		cout << "The rest of the calorie intake can be filled to your needs and desires and just convenience.\n";
+		cout << "So don't get stressed about matching the planned macros every day to a gram.\n\n";
 	}
 }
 
+void kello()
+{
+	int location = 0;
+	cout << "Are you in:\n" << "1. Brazil\n" << "2. Finland\n" << "3. USA\n";
+	cin >> location;
 
-int main() {
+	using namespace std::chrono;
+	system_clock::time_point moment = system_clock::now();
+	time_t tt = system_clock::to_time_t (moment);
+	tm local_tm = *localtime(&tt);
+
+	int hour = local_tm.tm_hour;
+	int min = local_tm.tm_min;
+	int brazil_h;
+	int finland_h;
+	int usa_h;
+	string bra;
+	string fin;
+	string US;
+
+	switch(location){
 	
-	char input = 'a';
-	double temp = 0.0;
-	double measure = 0.0;
-	double weight = 0.0;
+		case 1:
+			finland_h = hour+6;
+			if ( finland_h > 24 ){
+				finland_h = finland_h-24;
+			}
+			usa_h = hour-1;
+			if ( usa_h < 0 ){
+				usa_h = 24+usa_h;
+			}
+			tulostinviiva();
+			cout << "It's " << hour << ":" << setfill('0') << setw(2) << min << " right now in Brazil.\n";
+			cout << "The time in Finland is " << finland_h << ":" << setfill('0') << setw(2) << min << " right now.\n";
+			cout << "The time in USA is " << usa_h << ":" << setfill('0') << setw(2) << min << " right now.\n";
+			tulostinviiva();
+			break;
 
-	while (input != 'q') {
+		case 2:
+			brazil_h = hour-6;
+			if ( brazil_h < 0 ){
+				brazil_h = 24+brazil_h;
+			}
+			usa_h = hour-7;
+			if ( usa_h < 0 ){
+				usa_h = 24+usa_h;
+			}
 
-		cout << "Enter your desired conversion (t = temperature, l = length/height measure, w = weight, quit = q): ";
-		cin >> input;
+			tulostinviiva();
+			cout << "It's " << hour << ":" << setfill('0') << setw(2) << min << " right now in Finland.\n";
+			cout << "The time in Brazil is " << brazil_h << ":" << setfill('0') << setw(2) << min << " right now.\n";
+			cout << "The time in USA is " << usa_h << ":" << setfill('0') << setw(2) << min << " right now.\n";
+			tulostinviiva();
+			break;
 
-		switch (input) {
+		case 3:
+			brazil_h = hour+1;
+			AMPM(brazil_h, bra);
+			finland_h = hour+7;
+			AMPM(finland_h, fin);
+			usa_h = hour;
+			AMPM(usa_h, US);
 
-			char length_question;
-			char unit;
+			tulostinviiva();
+			cout << "It's " << usa_h << ":" << setfill('0') << setw(2) << min << US << " right now in USA.\n";;
+			cout << "The time in Brazil is " << brazil_h << ":" << setfill('0') << setw(2) << min << bra << " right now.\n";
+			cout << "The time in Finland is " << finland_h << ":" << setfill('0') << setw(2) << min << fin << " right now.\n";
+			tulostinviiva();
+			break;
+	
+		default:
+			cout << "Your mother was a hamster and your father smelled of elderberries\n";
+			break;
 
-			case 't':
-
-				cout << "Enter the temperature in numbers: ";
-				cin >> temp;
-				cout << "Enter the units (c = Celsius, f = Fahrenheit): ";
-				cin >> unit;
-
-				if (unit != 'c' && unit != 'f') {
-					cout << "Input error, try again!" << endl;
-					return 0;
-				}
-
-				lampoTila(unit, temp);
-
-				break;
-
-			case 'l':
-
-				cout << "Do you want the measure in height or length? (h/l): ";
-				cin >> length_question;
-
-				if (length_question == 'l') {
-					cout << "Enter the length in numbers: ";
-				}
-				else if (length_question == 'h') {
-					cout << "Enter the height in numbers: ";
-				}
-
-				cin >> measure;
-				cout << "Enter the unit (m = meters, f = feet, c = centimeters, i = inches, k = kilometres, e = miles): ";
-				cin >> unit;
-
-				if ( unit != 'm' && unit != 'f' && unit != 'c' && unit != 'i' && unit != 'k' && unit != 'e' ) {
-					cout << "Input error" << endl;
-					cout << "Press any key...";
-					char key;
-					cin >> key;
-					return 0;
-				}
-
-				pituusMitta(length_question, unit, measure);
-
-				break;
-
-			case 'w':
-
-				cout << "Enter the weight in numbers: ";
-				cin >> weight;
-				cout << "Enter the unit (k = kilograms, l = lbs): ";
-				cin >> unit;
-
-				if (unit != 'k' && unit != 'l') {
-					cout << "Input error, try again!" << endl;
-					return 0;
-				}
-
-				paino(unit, weight);
-
-				break;
-
-			case 'q':
-				continue;
-
-			default:
-				cout << "Error in choice, try again!" << endl;
-				break;
-		}
 	}
+}
 
-	cout << "Kiitos muuntimen käytöstä!" << endl;
-
+void AMPM(int& tunti, string& am_pm){
+	if ( tunti < 0 ) {
+		tunti = tunti-24;
+	}
+	if ( tunti > 12 ) {
+		tunti = tunti - 12;
+		am_pm = " pm";
+	}
+	else {
+		am_pm = " am";
+	}
 }
