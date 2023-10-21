@@ -92,6 +92,8 @@ int main()
                 AnyKey();
 				break;
 
+			// toisen asteen yhtälön ratkaisu
+			
             // binäärimuunnin
             
             // hex-muunnin

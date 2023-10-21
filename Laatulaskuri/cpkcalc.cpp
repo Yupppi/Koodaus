@@ -91,9 +91,9 @@ void CpkCalculator(double measurements[], int arraySize, double designMeasure, d
 	double upMeasure = designMeasure + upperLimit;
 	double lowMeasure = designMeasure + lowerLimit;
 	CpkUpper = (upMeasure - averageMeasure) / (3 * standardDeviation);
-	cout << "Your system's upper Cpk value is: " << setprecision(2) << CpkUpper << endl;
+	cout << "Your system's upper Cpk value is: " << fixed << setprecision(2) << CpkUpper << endl;
 	CpkLower = (averageMeasure - lowMeasure) / (3 * standardDeviation);
-	cout << "Your system's lower Cpk value is: " << setprecision(2) << CpkLower << endl;
+	cout << "Your system's lower Cpk value is: " << fixed << setprecision(2) << CpkLower << endl;
 
 	CpCalculator(upperLimit, lowerLimit, standardDeviation);
 	OutsideRange(measurements, arraySize, upMeasure, lowMeasure);
@@ -115,7 +115,7 @@ void OutsideRange (double measurements[], int arraySize, double upMeasure, doubl
 	// Counting the number of measurements outside the tolerance range
 	int outside = 0;
 	for ( int i = 0; i < arraySize; i++ ) {
-		if ( measurements[i] < upMeasure or measurements[i] < lowMeasure ) {
+		if ( measurements[i] < upMeasure || measurements[i] < lowMeasure ) {
 			++outside;
 		}
 	}

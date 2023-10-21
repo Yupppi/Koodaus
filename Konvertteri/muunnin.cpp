@@ -15,11 +15,13 @@ void paino(char unit, double weight);
 void kello();
 void AMPM(int& tunti, string& am_pm);
 
+enum OPTION{EXIT=5};
+
 int main()
 {
 	int input = 0;
 
-	while (input != 4)
+	while (input != EXIT)
 	{
 		string welcome = "**  Welcome to converter between metric and imperial units  **";
 
@@ -35,7 +37,7 @@ int main()
 			 << "2. Length/Height\n"
 			 << "3. Weight\n"
 			 << "4. Time\n"
-			 << "5. Exit\n";
+			 << EXIT << ". Exit\n";
 
 		cin >> input;
 		cout << '\n';
