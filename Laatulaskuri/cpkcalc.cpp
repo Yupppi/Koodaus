@@ -124,25 +124,13 @@ void CpkCalculator(const std::vector <double>& measurements, const Part& part) {
 
 	// Calculating the mean average measure X
 	double sum = std::accumulate(measurements.begin(), measurements.end(), 0.0);
-	double mean = sum / (measurements.size());
+	double mean = sum / measurements.size();
 
 	// Calculate the deviations from average measurement
 	double sigma = std::accumulate(measurements.begin(), measurements.end(), 0.0,
 						 			[&](double sum, const double x){
 		return sum + (x - mean) * (x - mean);
 	});
-
-	// can't get reduce to work
-	// double sigma = std::reduce(measurements.begin(), measurements.end(), 0.0,
-						 			// [&](double sigmasum, const double x){
-		// return sigmasum + (x - mean) * (x - mean);
-	// });
-
-	// these is a cruder attempt to calculate the s^2
-	// double sigma = 0.0;
-	// std::for_each(measurements.begin(), measurements.end(), [&](const double x) {
-		// sigma += (x - mean) * (x - mean);
-	// });
 
 	// Calculating the standard deviation s or sigma with the corrected
 	// standard deviation equation where instead of n we use n-1 to correct
