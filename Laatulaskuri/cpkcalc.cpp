@@ -111,12 +111,12 @@ void MeasurementCollector(std::vector<double>& measurements){
 }
 
 void OutPut(const std::vector<double>& measurements, const Part& part){
-    std::cout << std::endl;
-	std::cout << std::string(79, '-') << std::endl;
+    std::cout << '\n';
+	std::cout << std::string(79, '-') << '\n';
 	std::cout << std::endl;
 	CpkCalculator(measurements, part);
-	std::cout << std::endl;
-	std::cout << std::string(79, '-') << std::endl;
+	std::cout << '\n';
+	std::cout << std::string(79, '-') << '\n';
 	std::cout << std::endl;
 }
 
