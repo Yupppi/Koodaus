@@ -5,7 +5,11 @@
 #include <numeric>	// for accumulate() and for each()
 #include <cmath>	// for sqrt()
 
-struct Part {
+class Part
+{
+public:
+	Part() = default;
+
 	double designMeasure;
 	double upperLimit;
 	double lowerLimit;
@@ -17,8 +21,8 @@ struct Part {
     {
 		// the upper and lower tolerance measures as well as the tolerance range
         upMeasure = designMeasure + upperLimit;
-        lowMeasure = designMeasure + lowerLimit;  
-		toleranceRange = upperLimit - lowerLimit;      
+        lowMeasure = designMeasure + lowerLimit;
+		toleranceRange = upperLimit - lowerLimit;
     }
 };
 
@@ -31,7 +35,6 @@ void CpCalculator(const Part& part, const double& standardDeviation);
 void OutsideRange(const std::vector<double>& measurements, const Part& part);
 
 int main() {
-
 	// Welcome message
 	Welcome();
 	
