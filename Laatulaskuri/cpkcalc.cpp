@@ -11,44 +11,52 @@ struct Part {
 	double lowerLimit;
     double upMeasure;
     double lowMeasure;
+	double toleranceRange;
 
     void Tolerances()
     {
+		// the upper and lower tolerance measures as well as the tolerance range
         upMeasure = designMeasure + upperLimit;
-        lowMeasure = designMeasure + lowerLimit;        
+        lowMeasure = designMeasure + lowerLimit;  
+		toleranceRange = upperLimit - lowerLimit;      
     }
 };
 
 void Welcome();
 void DesignCollector(Part& part);
-void MeasurementCollector(std::vector<double>& measurements, int& vectorSize);
+void MeasurementCollector(std::vector<double>& measurements);
 void OutPut(const std::vector<double>& measurements, const Part&);
 void CpkCalculator(const std::vector <double>& measurements, const Part& part);
 void CpCalculator(const Part& part, const double& standardDeviation);
 void OutsideRange(const std::vector<double>& measurements, const Part& part);
 
 int main() {
-	// welcome message
+
+	// Welcome message
 	Welcome();
 	
+	// Create a part entity
     Part part;
+	
+	// sample design information, comment DesignCollector out if you test with these
+	// part = { 451.5, 0.3, -0.2 };
+	// part.Tolerances();
+	
 	// Take the drawing measurement and tolerance boundaries for the process
 	DesignCollector(part);
 
-
 	// Take the number of measurements to define the array
-	int vectorSize = 0;
 	std::vector<double> measurements;
 
-	// sample vector for testing purposes, comment MeasurementCollector out if you use this
+	// sample vector for testing purposes, comment MeasurementCollector out if you test this
 	// std::vector<double> sample = { 451.1, 451.7, 451.5, 452.0,
 								// 451.7, 452.3, 452.4, 450.9};
 	// measurements = sample;
 	
 	// Fill the array with user's measurements
-	MeasurementCollector(measurements, vectorSize);
+	MeasurementCollector(measurements);
 
-	// Decorate the output
+	// Decorate the output and call the calculattor functions
 	OutPut(measurements, part);
 
 	// Keep it alive until the user has read the results 
@@ -82,15 +90,8 @@ void DesignCollector(Part& part){
 	std::cout << std::endl;
 };
 
-void MeasurementCollector(std::vector<double>& measurements, int& vectorSize){
-	// std::cout << "Enter the number of measurements done: ";
-	// std::cin >> vectorSize;
-	// for ( int i = 0; i < vectorSize; i++ ) {
-		// static double measure = 0.0;
-		// std::cout << "Enter the measurement for part number " << i+1 << ": ";
-		// std::cin >> measure;
-		// measurements.emplace_back(measure);
-	// }
+void MeasurementCollector(std::vector<double>& measurements){
+
 	std::cin.exceptions(std::ios_base::failbit);
 	while (true) {
 		static int i = 0;
@@ -122,7 +123,6 @@ void OutPut(const std::vector<double>& measurements, const Part& part){
 void CpkCalculator(const std::vector <double>& measurements, const Part& part) {
 
 	// Calculating the mean average measure X
-
 	double sum = std::accumulate(measurements.begin(), measurements.end(), 0.0);
 	double mean = sum / (measurements.size());
 
@@ -147,8 +147,7 @@ void CpkCalculator(const std::vector <double>& measurements, const Part& part) {
 	// Calculating the standard deviation s or sigma with the corrected
 	// standard deviation equation where instead of n we use n-1 to correct
 	// the bias from both data and square root
-	double standardDeviation = 0.0;
-	standardDeviation = sqrt( sigma / ( measurements.size() - 1 ) );
+	double standardDeviation = sqrt( sigma / ( measurements.size() - 1 ) );
 	
 	// Calculating the upper and lower Cpk number
 	double CpkUpper = (part.upMeasure - mean) / (3 * standardDeviation);
@@ -163,13 +162,9 @@ void CpkCalculator(const std::vector <double>& measurements, const Part& part) {
 }
 
 void CpCalculator (const Part& part, const double& standardDeviation) {
-	
-	// Calculating the tolerance range
-	double toleranceRange = part.upperLimit - part.lowerLimit;
-	
 	// Calculating the Cp number
 	double Cp = 0.0;
-	Cp = toleranceRange / (6 * standardDeviation);
+	Cp = part.toleranceRange / (6 * standardDeviation);
 	std::cout << "Your system's Cp value is: " << std::setprecision(2) << Cp << std::endl;
 }
 
@@ -183,6 +178,6 @@ void OutsideRange (const std::vector <double>& measurements, const Part& part) {
 		}
 	}
 	std::cout << std::endl;
-	std::cout << "You have " << outside << " measurements out of " << measurements.size() <<
-	 " outside the tolerance range." << std::endl;
+	std::cout << "You have " << outside << " measurements out of " << measurements.size()
+	 		  << " outside the tolerance range." << std::endl;
 }
