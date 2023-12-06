@@ -48,6 +48,7 @@ def writeFile(header, data):
             newfile.write(data)
 
     newfile.close()
+    print("Successfully wrote the file")
 
 def main():
     print("Ctrl+C to exit program cleanly.")
@@ -59,6 +60,7 @@ def main():
             topten = readData()
             header, data = formatData(topten)
             writeFile(header, data)
+            print("Ctrl+C to exit program cleanly.")
             time.sleep(300)
     except KeyboardInterrupt:
         print("Program terminated by user.")
