@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 
 def readData():
     # enter the name and location of the data file
@@ -6,16 +7,22 @@ def readData():
     # from the directory the program is in
     filename = "./haastepisteetdata.csv"
 
+    # give the file a status that makes the rest of the program skip actions
     try:
         topten = pd.read_csv(filename, delimiter=';', decimal=',')
     except FileNotFoundError:
         print(f'The file {filename} could not be found.')
+        topten = None
 
     # just a debug print in terminal to see if the data read is solid
     print(topten)
     return topten
 
 def formatData(topten):
+    # if the .csv couldn't be read, skip formatting
+    if topten is None:
+        return ", "
+    
     max_name_length = topten['Kisaajat'].apply(len).max()
     max_points_length = topten['Kokonaispisteet'].astype(str).apply(len).max()
 
@@ -30,16 +37,27 @@ def writeFile(header, data):
     # write a new text file with formatted info as strings
     newfile_path = "./topten.txt"
 
-    with open(newfile_path, 'w') as newfile:
-        newfile.write(header)
-        newfile.write(data)
+    # write the file only if the .csv could be read and had data
+    if header and data:
+        with open(newfile_path, 'w') as newfile:
+            newfile.write(header)
+            newfile.write(data)
 
     newfile.close()
 
 def main():
-    topten = readData()
-    header, data = formatData(topten)
-    writeFile(header, data)
+    print("Ctrl+C to exit program cleanly.")
+
+    # run the loop infinitely, until the user inputs ctrl+c or closes the program
+    # run the actions every 5 minutes
+    try:
+        while True:
+            topten = readData()
+            header, data = formatData(topten)
+            writeFile(header, data)
+            time.sleep(300)
+    except KeyboardInterrupt:
+        print("Program terminated by user.")
 
 if __name__ == "__main__":
     main()
