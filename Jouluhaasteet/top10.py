@@ -2,9 +2,7 @@ import pandas as pd
 import time
 
 def readData():
-    # df = pd.read_excel('my_file', sheet_name='my_sheet_name')  # sheet_name is optional
-    # df.to_csv('output_file_name', index=False)  # index=False prevents pandas from writing a row index to the CSV.
-
+    # create a .csv from the excel file
     df = pd.read_excel('./haastepisteet.xlsx')
     df.to_csv('./haastepisteetdata.csv', index=False, sep=';', decimal=',')
 
