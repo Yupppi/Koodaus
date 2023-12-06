@@ -2,6 +2,12 @@ import pandas as pd
 import time
 
 def readData():
+    # df = pd.read_excel('my_file', sheet_name='my_sheet_name')  # sheet_name is optional
+    # df.to_csv('output_file_name', index=False)  # index=False prevents pandas from writing a row index to the CSV.
+
+    df = pd.read_excel('./haastepisteet.xlsx')
+    df.to_csv('./haastepisteetdata.csv', index=False, sep=';', decimal=',')
+
     # enter the name and location of the data file
     # the current setting is that it reads haastepisteetdata.csv named file
     # from the directory the program is in
@@ -15,7 +21,7 @@ def readData():
         topten = None
 
     # just a debug print in terminal to see if the data read is solid
-    print(topten)
+    # print(topten)
     return topten
 
 def formatData(topten):
