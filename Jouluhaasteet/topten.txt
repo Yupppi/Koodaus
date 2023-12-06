@@ -1,0 +1,11 @@
+     Kisaajat     Kokonaispisteet
+1    Nontimetis   10.0
+2    Doomlies     9.5 
+3    Umpukka      8.5 
+4    Gizzy___     7.5 
+5    joker_of_god 7.5 
+6    Retku        7.0 
+7    Zufodyme     6.0 
+8    Zadiihu      5.5 
+9    Sakaali__    5.0 
+10   Joceboi      4.5 
